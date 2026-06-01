@@ -1,13 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { fetchList, fetchDetail, fetchUrl, SwapiError } from "../src/api/client";
+import type { Person, Film, Planet } from "../src/api/types";
 
 describe("SWAPI client", () => {
   describe("fetchList", () => {
     it("fetches people list (page 1)", async () => {
-      const result = await fetchList("people", { page: 1 });
+      const result = await fetchList<Person>("people", { page: 1 });
       expect(result.count).toBeGreaterThan(0);
       expect(result.results.length).toBeGreaterThan(0);
-      expect(result.results[0]).toHaveProperty("name");
+      expect(result.results[0]?.name).toBeDefined();
     });
 
     it("supports pagination", async () => {
@@ -16,9 +17,9 @@ describe("SWAPI client", () => {
     });
 
     it("supports search", async () => {
-      const result = await fetchList("people", { search: "Luke" });
+      const result = await fetchList<Person>("people", { search: "Luke" });
       expect(result.results.length).toBeGreaterThan(0);
-      expect(result.results[0]!.name).toContain("Luke");
+      expect(result.results[0]?.name).toContain("Luke");
     });
 
     it("returns empty results for unmatched search", async () => {
@@ -28,44 +29,40 @@ describe("SWAPI client", () => {
     });
 
     it("fetches films list", async () => {
-      const result = await fetchList("films");
+      const result = await fetchList<Film>("films");
       expect(result.count).toBeGreaterThan(0);
-      expect(result.results[0]).toHaveProperty("title");
+      expect(result.results[0]?.title).toBeDefined();
     });
   });
 
   describe("fetchDetail", () => {
     it("fetches a person by ID", async () => {
-      const result = await fetchDetail("people", 1);
-      expect(result).toHaveProperty("name");
-      expect(result).toHaveProperty("url");
+      const result = await fetchDetail<Person>("people", 1);
+      expect(result.name).toBeDefined();
+      expect(result.url).toBeDefined();
     });
 
     it("fetches a film by ID", async () => {
-      const result = await fetchDetail("films", 1);
-      expect(result).toHaveProperty("title");
+      const result = await fetchDetail<Film>("films", 1);
+      expect(result.title).toBeDefined();
     });
   });
 
   describe("fetchUrl", () => {
     it("fetches a resource by full URL", async () => {
-      const result = await fetchUrl("https://swapi.dev/api/planets/1/");
-      expect(result).toHaveProperty("name");
-      expect(result).toHaveProperty("climate");
+      const result = await fetchUrl<Planet>("https://swapi.info/api/planets/1/");
+      expect(result.name).toBeDefined();
+      expect(result.climate).toBeDefined();
     });
   });
 
   describe("error handling", () => {
     it("throws SwapiError on 404", async () => {
-      await expect(fetchUrl("https://swapi.dev/api/nonexistent/")).rejects.toThrow(
-        SwapiError,
-      );
+      await expect(fetchUrl("https://swapi.info/api/nonexistent/")).rejects.toThrow(SwapiError);
     });
 
     it("throws SwapiError on 500", async () => {
-      await expect(fetchUrl("https://swapi.dev/api/error/")).rejects.toThrow(
-        SwapiError,
-      );
+      await expect(fetchUrl("https://swapi.info/api/error/")).rejects.toThrow(SwapiError);
     });
   });
 });

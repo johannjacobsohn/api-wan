@@ -1,1 +1,1 @@
-export const APP_NAME = "api-wan";
+export const APP_NAME = "Api Wan Kenobi";
