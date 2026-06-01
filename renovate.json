@@ -1,0 +1,9 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard", ":semanticCommits"],
+  "lockFileMaintenance": { "enabled": true },
+  "packageRules": [
+    { "matchUpdateTypes": ["minor", "patch"], "automerge": true },
+    { "matchPackagePatterns": ["^@tanstack/"], "groupName": "tanstack" }
+  ]
+}

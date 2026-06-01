@@ -31,7 +31,8 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "prettier --write"
+      "prettier --write",
+      "eslint --fix --no-warn-ignored --config apps/frontend/eslint.config.js"
     ],
     "*.{css,json,md}": [
       "prettier --write"
