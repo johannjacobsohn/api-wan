@@ -6,3 +6,5 @@ services:
       args:
         VITE_SWAPI_BASE_URL: ${VITE_SWAPI_BASE_URL:-https://swapi.info/api}
     restart: unless-stopped
+    ports:
+      - 8089
