@@ -5,6 +5,4 @@ services:
       dockerfile: apps/frontend/Dockerfile
       args:
         VITE_SWAPI_BASE_URL: ${VITE_SWAPI_BASE_URL:-https://swapi.info/api}
-    ports:
-      - "8080:80"
     restart: unless-stopped
