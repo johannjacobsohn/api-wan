@@ -6,16 +6,19 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+  // Synchronous setState is required here to suppress hydration mismatch
+  // on first client render with next-themes.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   if (!mounted) {
     return <span style={{ width: 24, display: "inline-block" }} />;
   }
 
-  const next =
-    theme === "dark" ? "light" : theme === "light" ? "system" : "dark";
-  const icon =
-    theme === "dark" ? <BsMoon /> : theme === "light" ? <BsSun /> : <BsCircleHalf />;
+  const next = theme === "dark" ? "light" : theme === "light" ? "system" : "dark";
+  const icon = theme === "dark" ? <BsMoon /> : theme === "light" ? <BsSun /> : <BsCircleHalf />;
 
   return (
     <button

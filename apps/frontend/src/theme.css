@@ -1,3 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&display=swap");
+
+:root {
+  --pico-font-family-sans-serif: "Exo 2", system-ui, sans-serif;
+  --pico-font-family: "Exo 2", system-ui, sans-serif;
+}
+
+.app-name,
+h1,
+h2,
+h3 {
+  font-family: "Orbitron", sans-serif;
+  letter-spacing: 0.04em;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+h2 {
+  font-weight: 700;
+}
+
+h3 {
+  font-weight: 400;
+}
+
 :root {
   --pico-primary: #ffe81f;
   --pico-primary-hover: #ffd700;
@@ -15,8 +42,191 @@
   --pico-primary-hover: #8b6508;
 }
 
-header nav {
+/* top bar: logo centered, theme toggle pinned right */
+.header-bar {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 0 0.5rem;
+}
+
+.header-bar > a.app-name {
+  flex: 1;
+  justify-content: center;
+}
+
+/* sub-nav: full-width resource tab bar */
+.resource-sub-nav {
+  border-top: 1px solid var(--pico-muted-border-color);
   border-bottom: 1px solid var(--pico-muted-border-color);
-  padding-bottom: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.resource-sub-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.resource-sub-nav ul {
+  width: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.resource-sub-nav li {
+  flex-shrink: 0;
+}
+
+.resource-sub-nav a {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.6rem 1rem;
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--pico-muted-color);
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.resource-sub-nav a:hover {
+  color: var(--pico-primary);
+  border-bottom-color: var(--pico-primary);
+  background: color-mix(in srgb, var(--pico-primary) 10%, transparent);
+}
+
+/* active link */
+.resource-sub-nav a[aria-current="page"] {
+  color: var(--pico-primary);
+  border-bottom-color: var(--pico-primary);
+  font-weight: 700;
+}
+
+/* icon alignment */
+.nav-icon {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+/* app logo: icon stacked above text */
+a.app-name {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15em;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.app-name-text {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* rainbow cycling icon — mirrors lit.codecino.io .rainbow-text hue animation */
+.rainbow-icon {
+  display: inline-flex;
+  align-items: center;
+  font-size: 2.8rem;
+  color: #ffe81f;
+  animation: rainbow-icon 8s linear infinite;
+}
+
+@keyframes rainbow-icon {
+  0% {
+    filter: hue-rotate(0deg) drop-shadow(0 0 6px currentColor);
+  }
+
+  100% {
+    filter: hue-rotate(360deg) drop-shadow(0 0 6px currentColor);
+  }
+}
+
+@media (max-width: 768px) {
+  .resource-nav-label {
+    display: none;
+  }
+
+  .resource-sub-nav a {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+dl.detail-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0;
+}
+
+dl.detail-grid > div {
+  display: contents;
+}
+
+dl.detail-grid dt {
+  font-weight: 700;
+  padding: 0.375rem 0.75rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+}
+
+dl.detail-grid dd {
+  margin: 0;
+  padding: 0.375rem 0.75rem;
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+dl.detail-grid > div:nth-child(even) dt,
+dl.detail-grid > div:nth-child(even) dd {
+  background: var(--pico-table-row-stripped-background, rgba(128, 128, 128, 0.05));
+}
+
+@media (max-width: 480px) {
+  dl.detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  dl.detail-grid dt {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  dl.detail-grid dd {
+    padding-top: 0;
+  }
+
+  dl.detail-grid > div {
+    padding-top: 0.5rem;
+  }
+
+  dl.detail-grid > div:nth-child(even) dt,
+  dl.detail-grid > div:nth-child(even) dd {
+    background: transparent;
+  }
+
+  dl.detail-grid > div:nth-child(even) {
+    background: var(--pico-table-row-stripped-background, rgba(128, 128, 128, 0.05));
+    margin: 0 -0.75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    border-radius: 0.25rem;
+  }
 }
