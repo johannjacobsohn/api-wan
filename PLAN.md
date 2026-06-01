@@ -86,7 +86,7 @@ pnpm exec husky init
 
 ## 4. SWAPI reference (everything you need about the API)
 
-Base URL: `https://swapi.dev/api` (fallback mirror: `https://swapi.py4e.com/api`).
+Base URL: `https://swapi.info/api` (fallback mirror: `https://swapi.py4e.com/api`).
 SWAPI has a history of downtime/TLS issues — make the base URL configurable and document
 the fallback (see §6).
 
@@ -97,8 +97,8 @@ the fallback (see §6).
 ```ts
 interface Page<T> {
   count: number;
-  next: string | null;      // full URL or null
-  previous: string | null;  // full URL or null
+  next: string | null; // full URL or null
+  previous: string | null; // full URL or null
   results: T[];
 }
 ```
@@ -107,7 +107,7 @@ interface Page<T> {
 - `search` matches the resource's name/title field on most resources.
 
 **Detail endpoint:** `GET {base}/{resource}/{id}/` → a single object. Every object has a
-`url` field like `https://swapi.dev/api/people/1/`. Parse the trailing integer for the id.
+`url` field like `https://swapi.info/api/people/1/`. Parse the trailing integer for the id.
 
 **Display name field:** `films` uses `title`; all other resources use `name`.
 
@@ -201,7 +201,7 @@ Paths in §6–§8 are relative to `apps/frontend/`. Root `package.json` scripts
 **Client (`src/api/client.ts`)**
 
 - Read base URL from `import.meta.env.VITE_SWAPI_BASE_URL`, defaulting to
-  `https://swapi.dev/api`. Document `swapi.py4e.com/api` as the fallback in README and
+  `https://swapi.info/api`. Document `swapi.py4e.com/api` as the fallback in README and
   `.env.example`.
 - `fetchList(resource, { page, search })` → `Page<T>`; `fetchDetail(resource, id)` → `T`;
   `fetchUrl(url)` → `T` (for resolving related links).
@@ -254,10 +254,10 @@ Add these `package.json` scripts (run with `pnpm <script>`):
 
 ```jsonc
 {
-  "test":      "vitest run",                 // mocked only — CI safe
-  "test:watch":"vitest",
-  "test:e2e":  "playwright test",            // mocked network — CI safe
-  "test:live": "vitest run -c vitest.live.config.ts"  // REAL SWAPI — manual only
+  "test": "vitest run", // mocked only — CI safe
+  "test:watch": "vitest",
+  "test:e2e": "playwright test", // mocked network — CI safe
+  "test:live": "vitest run -c vitest.live.config.ts", // REAL SWAPI — manual only
 }
 ```
 
