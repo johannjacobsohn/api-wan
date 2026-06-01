@@ -1,35 +1,43 @@
 import { Link } from "@tanstack/react-router";
 import { getAllResourceConfigs } from "../resources/registry";
 import {
-  BsPeople,
-  BsCameraVideo,
-  BsGlobe,
-  BsRobot,
-  BsTruck,
-  BsRocket,
-} from "react-icons/bs";
+  GiPerson,
+  GiFilmProjector,
+  GiRingedPlanet,
+  GiDna1,
+  GiScoutShip,
+  GiStarfighter,
+} from "react-icons/gi";
 import type { ResourceType } from "../api/types";
 import type { ReactNode } from "react";
 
 const ICON_MAP: Record<ResourceType, ReactNode> = {
-  people: <BsPeople />,
-  films: <BsCameraVideo />,
-  planets: <BsGlobe />,
-  species: <BsRobot />,
-  vehicles: <BsTruck />,
-  starships: <BsRocket />,
+  people: <GiPerson />,
+  films: <GiFilmProjector />,
+  planets: <GiRingedPlanet />,
+  species: <GiDna1 />,
+  vehicles: <GiScoutShip />,
+  starships: <GiStarfighter />,
 };
 
 export function ResourceNav() {
   const configs = getAllResourceConfigs();
 
   return (
-    <nav>
+    <nav className="resource-sub-nav" aria-label="Browse resources">
       <ul>
         {configs.map((c) => (
           <li key={c.endpoint}>
-            <Link to="/$resource" params={{ resource: c.endpoint }}>
-              {ICON_MAP[c.endpoint]} {c.label}
+            <Link
+              to="/$resource"
+              params={{ resource: c.endpoint }}
+              activeProps={{ "aria-current": "page" }}
+              activeOptions={{ exact: false }}
+            >
+              <span className="nav-icon" aria-hidden="true">
+                {ICON_MAP[c.endpoint]}
+              </span>
+              <span className="resource-nav-label">{c.label}</span>
             </Link>
           </li>
         ))}
