@@ -6,7 +6,7 @@ export interface ResourceConfig {
   displayField: "name" | "title";
   listColumns: { key: string; header: string }[];
   detailFields: { key: string; label: string }[];
-  linkFields: string[];
+  linkFields: { key: string; label: string }[];
 }
 
 export const RESOURCE_DISPLAY_NAME: Record<ResourceType, string> = {
@@ -40,7 +40,13 @@ const REGISTRY: Record<ResourceType, ResourceConfig> = {
       { key: "birth_year", label: "Birth Year" },
       { key: "gender", label: "Gender" },
     ],
-    linkFields: ["homeworld", "films", "species", "vehicles", "starships"],
+    linkFields: [
+      { key: "homeworld", label: "Homeworld" },
+      { key: "films", label: "Films" },
+      { key: "species", label: "Species" },
+      { key: "vehicles", label: "Vehicles" },
+      { key: "starships", label: "Starships" },
+    ],
   },
   films: {
     endpoint: "films",
@@ -60,7 +66,13 @@ const REGISTRY: Record<ResourceType, ResourceConfig> = {
       { key: "release_date", label: "Release Date" },
       { key: "opening_crawl", label: "Opening Crawl" },
     ],
-    linkFields: ["characters", "planets", "starships", "vehicles", "species"],
+    linkFields: [
+      { key: "characters", label: "Characters" },
+      { key: "planets", label: "Planets" },
+      { key: "starships", label: "Starships" },
+      { key: "vehicles", label: "Vehicles" },
+      { key: "species", label: "Species" },
+    ],
   },
   planets: {
     endpoint: "planets",
@@ -83,7 +95,10 @@ const REGISTRY: Record<ResourceType, ResourceConfig> = {
       { key: "surface_water", label: "Surface Water" },
       { key: "population", label: "Population" },
     ],
-    linkFields: ["residents", "films"],
+    linkFields: [
+      { key: "residents", label: "Residents" },
+      { key: "films", label: "Films" },
+    ],
   },
   species: {
     endpoint: "species",
@@ -106,7 +121,11 @@ const REGISTRY: Record<ResourceType, ResourceConfig> = {
       { key: "average_lifespan", label: "Avg Lifespan" },
       { key: "language", label: "Language" },
     ],
-    linkFields: ["homeworld", "people", "films"],
+    linkFields: [
+      { key: "homeworld", label: "Homeworld" },
+      { key: "people", label: "People" },
+      { key: "films", label: "Films" },
+    ],
   },
   vehicles: {
     endpoint: "vehicles",
@@ -131,7 +150,10 @@ const REGISTRY: Record<ResourceType, ResourceConfig> = {
       { key: "consumables", label: "Consumables" },
       { key: "vehicle_class", label: "Class" },
     ],
-    linkFields: ["pilots", "films"],
+    linkFields: [
+      { key: "pilots", label: "Pilots" },
+      { key: "films", label: "Films" },
+    ],
   },
   starships: {
     endpoint: "starships",
@@ -158,7 +180,10 @@ const REGISTRY: Record<ResourceType, ResourceConfig> = {
       { key: "MGLT", label: "MGLT" },
       { key: "starship_class", label: "Class" },
     ],
-    linkFields: ["pilots", "films"],
+    linkFields: [
+      { key: "pilots", label: "Pilots" },
+      { key: "films", label: "Films" },
+    ],
   },
 };
 

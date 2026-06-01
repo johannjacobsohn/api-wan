@@ -49,49 +49,47 @@ export function ResourceDetail({ resource, id }: ResourceDetailProps) {
   if (error) return <ErrorState message={(error as Error).message} />;
   if (!data) return <ErrorState message="No data found" />;
 
-  const linkFieldsSet = new Set(config.linkFields);
+  const linkFieldsSet = new Set(config.linkFields.map((f) => f.key));
 
   return (
     <article>
       <h2>{String(data[config.displayField as keyof typeof data] ?? "")}</h2>
-      <table>
-        <tbody>
-          {config.detailFields.map((field) => {
-            if (linkFieldsSet.has(field.key)) return null;
-            const value = data[field.key as keyof typeof data];
+      <dl className="detail-grid">
+        {config.detailFields.map((field) => {
+          if (linkFieldsSet.has(field.key)) return null;
+          const value = data[field.key as keyof typeof data];
+          return (
+            <div key={field.key}>
+              <dt>{field.label}</dt>
+              <dd>{String(value ?? "")}</dd>
+            </div>
+          );
+        })}
+        {config.linkFields.map(({ key, label }) => {
+          const value = data[key as keyof typeof data];
+          if (typeof value === "string") {
             return (
-              <tr key={field.key}>
-                <th>{field.label}</th>
-                <td>{String(value ?? "")}</td>
-              </tr>
+              <div key={key}>
+                <dt>{label}</dt>
+                <dd>
+                  <ResolvedLink url={value} />
+                </dd>
+              </div>
             );
-          })}
-          {config.linkFields.map((field) => {
-            const value = data[field as keyof typeof data];
-            if (typeof value === "string") {
-              return (
-                <tr key={field}>
-                  <th>{field}</th>
-                  <td>
-                    <ResolvedLink url={value} />
-                  </td>
-                </tr>
-              );
-            }
-            if (Array.isArray(value)) {
-              return (
-                <tr key={field}>
-                  <th>{field}</th>
-                  <td>
-                    <LinkList urls={value as string[]} />
-                  </td>
-                </tr>
-              );
-            }
-            return null;
-          })}
-        </tbody>
-      </table>
+          }
+          if (Array.isArray(value)) {
+            return (
+              <div key={key}>
+                <dt>{label}</dt>
+                <dd>
+                  <LinkList urls={value as string[]} />
+                </dd>
+              </div>
+            );
+          }
+          return null;
+        })}
+      </dl>
       <Link to="/$resource" params={{ resource }}>
         &larr; Back to {config.label}
       </Link>

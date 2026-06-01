@@ -9,6 +9,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "@tanstack/react-router";
 import { useResourceList } from "../hooks/useResourceList";
 import { getResourceConfig } from "../resources/registry";
+import { PAGE_SIZE } from "../api/client";
 import { Loading } from "./Loading";
 import { ErrorState } from "./ErrorState";
 import { Empty } from "./Empty";
@@ -33,16 +34,18 @@ export function ResourceList({
 }: ResourceListProps) {
   const [input, setInput] = useState(searchQuery);
   const timer = useRef<ReturnType<typeof setTimeout>>();
+  const onSearchChangeRef = useRef(onSearchChange);
+  onSearchChangeRef.current = onSearchChange;
 
   useEffect(() => {
     if (timer.current) clearTimeout(timer.current);
     timer.current = setTimeout(() => {
-      if (input !== searchQuery) onSearchChange(input);
+      if (input !== searchQuery) onSearchChangeRef.current(input);
     }, 300);
     return () => {
       if (timer.current) clearTimeout(timer.current);
     };
-  }, [input]);
+  }, [input, searchQuery]);
 
   useEffect(() => {
     setInput(searchQuery);
@@ -61,10 +64,7 @@ export function ResourceList({
           if (col.key === config.displayField) {
             const id = (info.row.original.url as string).split("/").filter(Boolean).pop();
             return (
-              <Link
-                to="/$resource/$id"
-                params={{ resource, id: id ?? "" }}
-              >
+              <Link to="/$resource/$id" params={{ resource, id: id ?? "" }}>
                 {String(value)}
               </Link>
             );
@@ -75,6 +75,7 @@ export function ResourceList({
     ) as ColumnDef<RowData>[];
   }, [config, resource]);
 
+  // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: (data?.results ?? []) as unknown as RowData[],
     columns,
@@ -85,14 +86,14 @@ export function ResourceList({
   if (error) return <ErrorState message={(error as Error).message} />;
   if (!data || data.results.length === 0) return <Empty />;
 
-  const totalPages = Math.ceil(data.count / 10);
+  const totalPages = Math.ceil(data.count / PAGE_SIZE);
 
   return (
     <section>
-      <hgroup>
+      <div>
         <h2>{config.label}</h2>
         <p>{data.count} results</p>
-      </hgroup>
+      </div>
 
       <input
         type="search"
@@ -103,14 +104,12 @@ export function ResourceList({
       />
 
       <figure>
-        <table>
+        <table className="striped">
           <thead>
             {table.getHeaderGroups().map((hg) => (
               <tr key={hg.id}>
                 {hg.headers.map((h) => (
-                  <th key={h.id}>
-                    {flexRender(h.column.columnDef.header, h.getContext())}
-                  </th>
+                  <th key={h.id}>{flexRender(h.column.columnDef.header, h.getContext())}</th>
                 ))}
               </tr>
             ))}
@@ -119,9 +118,7 @@ export function ResourceList({
             {table.getRowModel().rows.map((row) => (
               <tr key={row.id}>
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
+                  <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
                 ))}
               </tr>
             ))}
@@ -133,10 +130,7 @@ export function ResourceList({
         <nav>
           <ul>
             <li>
-              <button
-                disabled={page <= 1}
-                onClick={() => onPageChange(page - 1)}
-              >
+              <button disabled={page <= 1} onClick={() => onPageChange(page - 1)}>
                 Previous
               </button>
             </li>
@@ -146,10 +140,7 @@ export function ResourceList({
               </small>
             </li>
             <li>
-              <button
-                disabled={page >= totalPages}
-                onClick={() => onPageChange(page + 1)}
-              >
+              <button disabled={page >= totalPages} onClick={() => onPageChange(page + 1)}>
                 Next
               </button>
             </li>
