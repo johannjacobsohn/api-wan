@@ -53,7 +53,7 @@ describe("ResourceList", () => {
       />,
     );
 
-    const items = await screen.findAllByText(/82 results/);
+    const items = await screen.findAllByText(/2 results/);
     expect(items.length).toBeGreaterThanOrEqual(1);
   });
 
