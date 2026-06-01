@@ -1,0 +1,22 @@
+:root {
+  --pico-primary: #ffe81f;
+  --pico-primary-hover: #ffd700;
+  --pico-primary-background: #ffe81f;
+  --pico-text-selection-color: rgba(255, 232, 31, 0.25);
+}
+
+[data-theme="dark"] {
+  --pico-primary: #ffe81f;
+  --pico-primary-hover: #ffd700;
+}
+
+[data-theme="light"] {
+  --pico-primary: #b8860b;
+  --pico-primary-hover: #8b6508;
+}
+
+header nav {
+  border-bottom: 1px solid var(--pico-muted-border-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}

@@ -24,7 +24,7 @@ export async function resolveUrl(url: string): Promise<ResolvedLink | null> {
   try {
     const obj = await fetchUrl<SwapiResource>(url);
     const displayField = DISPLAY_FIELD.get(parsed.resource) ?? "name";
-    const label = (obj as Record<string, string>)[displayField] ?? parsed.id;
+    const label = String((obj as unknown as Record<string, unknown>)[displayField] ?? parsed.id);
     return { ...parsed, label, url };
   } catch {
     return { ...parsed, label: parsed.id, url };
