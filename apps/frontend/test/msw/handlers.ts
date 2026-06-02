@@ -38,22 +38,37 @@ const c3po = {
 
 const allPeople = [luke, c3po];
 
-const allFilms = [
-  {
-    title: "A New Hope",
-    episode_id: 4,
-    opening_crawl: "It is a period of civil war...",
-    director: "George Lucas",
-    producer: "Gary Kurtz, Rick McCallum",
-    release_date: "1977-05-25",
-    characters: [`${BASE}/people/1/`],
-    planets: [`${BASE}/planets/1/`],
-    starships: [],
-    vehicles: [],
-    species: [`${BASE}/species/1/`],
-    url: `${BASE}/films/1/`,
-  },
-];
+const film1 = {
+  title: "A New Hope",
+  episode_id: 4,
+  opening_crawl: "It is a period of civil war...",
+  director: "George Lucas",
+  producer: "Gary Kurtz, Rick McCallum",
+  release_date: "1977-05-25",
+  characters: [`${BASE}/people/1/`],
+  planets: [`${BASE}/planets/1/`],
+  starships: [],
+  vehicles: [],
+  species: [`${BASE}/species/1/`],
+  url: `${BASE}/films/1/`,
+};
+
+const film2 = {
+  title: "The Empire Strikes Back",
+  episode_id: 5,
+  opening_crawl: "It is a dark time for the Rebellion...",
+  director: "Irvin Kershner",
+  producer: "Gary Kurtz, Rick McCallum",
+  release_date: "1980-05-21",
+  characters: [`${BASE}/people/1/`],
+  planets: [],
+  starships: [],
+  vehicles: [],
+  species: [],
+  url: `${BASE}/films/2/`,
+};
+
+const allFilms = [film1, film2];
 
 const planet1 = {
   name: "Tatooine",
@@ -68,21 +83,6 @@ const planet1 = {
   residents: [`${BASE}/people/1/`],
   films: [`${BASE}/films/1/`],
   url: `${BASE}/planets/1/`,
-};
-
-const film1 = {
-  title: "A New Hope",
-  episode_id: 4,
-  opening_crawl: "It is a period of civil war...",
-  director: "George Lucas",
-  producer: "Gary Kurtz, Rick McCallum",
-  release_date: "1977-05-25",
-  characters: [`${BASE}/people/1/`],
-  planets: [`${BASE}/planets/1/`],
-  starships: [],
-  vehicles: [],
-  species: [],
-  url: `${BASE}/films/1/`,
 };
 
 export const handlers = [
@@ -150,6 +150,7 @@ export const handlers = [
     }),
   ),
   http.get(`${BASE}/people/999/`, () => new HttpResponse(null, { status: 404 })),
+  http.get(`${BASE}/films/2/`, () => HttpResponse.json(film2)),
   http.get(`${BASE}/films/999/`, () => new HttpResponse(null, { status: 404 })),
   http.get(`${BASE}/nonexistent/`, () => new HttpResponse(null, { status: 404 })),
   http.get(`${BASE}/error/`, () => new HttpResponse(null, { status: 500 })),
