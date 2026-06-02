@@ -2,9 +2,9 @@ export type ResourceType = "people" | "films" | "planets" | "species" | "vehicle
 
 export interface Page<T> {
   count: number;
-  next: string | null;
-  previous: string | null;
   results: T[];
+  hasNext: boolean;
+  hasPrevious: boolean;
 }
 
 export interface Person {

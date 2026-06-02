@@ -27,29 +27,30 @@ async function request<T>(url: string): Promise<T> {
 }
 
 function normalizePageResponse<T extends SwapiResource>(
-  data: T[] | Page<T>,
+  data: T[],
   page: number,
   search: string,
 ): Page<T> {
-  if (Array.isArray(data)) {
-    let results = data;
-    if (search) {
-      const q = search.toLowerCase();
-      results = data.filter((item) => {
-        const r = item as unknown as Record<string, unknown>;
-        const display = r.name ?? r.title ?? "";
-        return String(display).toLowerCase().includes(q);
-      });
-    }
-    const start = (page - 1) * PAGE_SIZE;
-    return {
-      count: results.length,
-      next: start + PAGE_SIZE < results.length ? `${BASE_URL}/?page=${page + 1}` : null,
-      previous: page > 1 ? `${BASE_URL}/?page=${page - 1}` : null,
-      results: results.slice(start, start + PAGE_SIZE),
-    };
+  let results = data;
+  if (search) {
+    const q = search.toLowerCase();
+    results = data.filter((item) => {
+      const r = item as unknown as Record<string, unknown>;
+      const display = r.name ?? r.title ?? "";
+      return String(display).toLowerCase().includes(q);
+    });
   }
-  return data;
+  const start = (page - 1) * PAGE_SIZE;
+  return {
+    count: results.length,
+    results: results.slice(start, start + PAGE_SIZE),
+    hasNext: start + PAGE_SIZE < results.length,
+    hasPrevious: page > 1,
+  };
+}
+
+export function fetchAll<T extends SwapiResource>(resource: ResourceType): Promise<T[]> {
+  return request<T[]>(`${BASE_URL}/${resource}/`);
 }
 
 export function fetchList<T extends SwapiResource>(
@@ -57,7 +58,7 @@ export function fetchList<T extends SwapiResource>(
   { page = 1, search = "" }: { page?: number; search?: string } = {},
 ): Promise<Page<T>> {
   const url = `${BASE_URL}/${resource}/`;
-  return request<T[] | Page<T>>(url).then((data) => normalizePageResponse(data, page, search));
+  return request<T[]>(url).then((data) => normalizePageResponse(data, page, search));
 }
 
 export function fetchDetail<T extends SwapiResource>(
