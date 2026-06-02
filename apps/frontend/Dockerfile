@@ -16,5 +16,6 @@ RUN pnpm --filter frontend build
 FROM nginx:alpine
 COPY --from=builder /app/apps/frontend/dist /usr/share/nginx/html
 COPY apps/frontend/nginx.conf /etc/nginx/conf.d/default.conf
-HEALTHCHECK CMD wget --no-verbose --tries=1 --spider http://localhost:8089/ || exit 1
+HEALTHCHECK --start-period=15s --interval=30s --timeout=5s --retries=3 \
+  CMD wget -q -O /dev/null http://0.0.0.0:8089/ || exit 1
 EXPOSE 8089
