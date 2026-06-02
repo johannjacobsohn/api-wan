@@ -33,6 +33,9 @@ References use `file:line` from `apps/frontend/` unless noted.
 - [ ] **Remove dead `next`/`previous` data** — `client.ts:47-48`. `normalizePageResponse`
       fabricates URLs nothing consumes (UI uses `count` + page math). Drop them or make them
       booleans so they don't imply they're fetchable.
+- [ ] **Keep search visible on empty results** — the search input disappears when a query
+      returns no results, making it impossible to clear or change the search. Keep the field
+      rendered (or at least the controls) so the user can refine their query.
 
 ## Style / hygiene
 
