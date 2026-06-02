@@ -75,6 +75,8 @@ export function ResourceList({
     ) as ColumnDef<RowData>[];
   }, [config, resource]);
 
+  // useReactTable is from @tanstack/react-table, not a hook, but the linter
+  // flags it because the import pattern matches react-hooks rules.
   // eslint-disable-next-line react-hooks/incompatible-library
   const table = useReactTable({
     data: (data?.results ?? []) as unknown as RowData[],
@@ -84,15 +86,15 @@ export function ResourceList({
 
   if (isLoading) return <Loading />;
   if (error) return <ErrorState message={(error as Error).message} />;
-  if (!data || data.results.length === 0) return <Empty />;
 
-  const totalPages = Math.ceil(data.count / PAGE_SIZE);
+  const totalPages = data ? Math.ceil(data.count / PAGE_SIZE) : 0;
+  const isEmpty = !data || data.results.length === 0;
 
   return (
     <section>
       <div>
         <h2>{config.label}</h2>
-        <p>{data.count} results</p>
+        <p>{data?.count ?? 0} results</p>
       </div>
 
       <input
@@ -102,6 +104,8 @@ export function ResourceList({
         onChange={(e) => setInput(e.target.value)}
         aria-label="Search"
       />
+
+      {isEmpty && <Empty />}
 
       <figure>
         <table className="striped">

@@ -6,9 +6,9 @@ export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Synchronous setState is required here to suppress hydration mismatch
-  // on first client render with next-themes.
   useEffect(() => {
+    // Synchronous setState is required here to suppress hydration mismatch
+    // on first client render with next-themes.
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
