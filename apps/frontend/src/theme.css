@@ -29,17 +29,22 @@ h3 {
   --pico-primary: #ffe81f;
   --pico-primary-hover: #ffd700;
   --pico-primary-background: #ffe81f;
+  --pico-primary-inverse: #000;
   --pico-text-selection-color: rgba(255, 232, 31, 0.25);
 }
 
 [data-theme="dark"] {
   --pico-primary: #ffe81f;
   --pico-primary-hover: #ffd700;
+  --pico-primary-background: #ffe81f;
+  --pico-primary-inverse: #000;
 }
 
 [data-theme="light"] {
   --pico-primary: #b8860b;
   --pico-primary-hover: #8b6508;
+  --pico-primary-background: #b8860b;
+  --pico-primary-inverse: #fff;
 }
 
 /* top bar: logo centered, theme toggle pinned right */
