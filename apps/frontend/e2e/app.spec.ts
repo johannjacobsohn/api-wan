@@ -98,14 +98,14 @@ test.describe("SWAPI browser app", () => {
 
   test("navigates to people list and shows data", async ({ page }) => {
     await page.goto("/people");
-    await expect(page.getByText("Person 1")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Person 1", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 
   test("search narrows results", async ({ page }) => {
     await page.goto("/people");
     const search = page.getByPlaceholder("Search...");
     await search.fill("Person 1");
-    await expect(page.getByText("Person 1")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("Person 1", { exact: true })).toBeVisible({ timeout: 10000 });
   });
 
   test("pagination shows next page", async ({ page }) => {
@@ -129,7 +129,7 @@ test.describe("SWAPI browser app", () => {
 
   test("detail page shows film info and back link", async ({ page }) => {
     await page.goto("/films/1");
-    await expect(page.getByText("A New Hope")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("heading", { name: "A New Hope" })).toBeVisible({ timeout: 10000 });
     await expect(page.getByRole("link", { name: /back to films/i })).toBeVisible();
   });
 

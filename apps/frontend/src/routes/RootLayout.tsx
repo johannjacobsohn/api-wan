@@ -10,12 +10,14 @@ export function RootLayout() {
     <>
       <header>
         <div className="header-bar">
-          <Link to="/" className="app-name">
-            <span className="rainbow-icon">
-              <GiEnergySword />
-            </span>
-            <span className="app-name-text">{APP_NAME}</span>
-          </Link>
+          <h1 className="app-name">
+            <Link to="/">
+              <span className="rainbow-icon">
+                <GiEnergySword />
+              </span>
+              <span className="app-name-text">{APP_NAME}</span>
+            </Link>
+          </h1>
           <ThemeToggle />
         </div>
         <ResourceNav />
