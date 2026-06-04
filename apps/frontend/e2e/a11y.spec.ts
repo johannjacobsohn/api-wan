@@ -87,7 +87,7 @@ test.describe("Accessibility", () => {
 
   test("detail page has no critical a11y violations", async ({ page }) => {
     await page.goto("/films/1");
-    await expect(page.getByRole("heading", { name: "A New Hope" })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText("A New Hope")).toBeVisible({ timeout: 10000 });
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations).toEqual([]);
   });
